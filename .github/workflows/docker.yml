@@ -9,13 +9,14 @@ jobs:
         id: prep
         run: |
           BASE_PATH=ghcr.io/${{ github.actor }}/covid-seq
-          VERSION=latest
           if [[ -v $GITHUB_REF ]]; then
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
+            if [[ $GITHUB_REF == refs/tags/* ]]; then
+              VERSION=${GITHUB_REF#refs/tags/v}
+            else
+              VERSION=$GITHUB_REF
+            fi
           else
-            VERSION=$GITHUB_REF
-           fi
+            VERSION=latest
           fi
           TAGS="${BASE_PATH}/${VERSION}/pangolin_nsc:2021-04-28"
           echo ::set-output name=tags::${TAGS}
